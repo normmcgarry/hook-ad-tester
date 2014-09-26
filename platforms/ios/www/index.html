@@ -24,8 +24,8 @@
       <meta charset="utf-8" />
       <meta name="format-detection" content="telephone=no" />
       <meta name="msapplication-tap-highlight" content="no" />
-      <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-      <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+
+      <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
 
       <link href="css/bootstrap.min.css" rel="stylesheet">
       <link href="css/index.css" rel="stylesheet">
@@ -38,7 +38,7 @@
           <label for="urlInput">URL</label>
           <div class="input-group">
             <span class="input-group-addon">http://</span>
-            <input type="url" class="form-control" id="urlInput" value="www.google.com">
+            <input type="url" class="form-control" id="urlInput" value="goo.gl/">
           </div>
         </div>
         <button type="button" class="btn btn-primary">Load</button>
@@ -51,6 +51,7 @@
 
       <script>
         $(window).load(function() {
+          $("#urlInput").focus();
           $("button").click(function() {
             window.location.href = "http://" + $("#urlInput").val();
             return false;
