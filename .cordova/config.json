@@ -1,0 +1,9 @@
+{
+    "lib": {
+        "www": {
+            "id": "com.byhook.internal.adtester",
+            "version": "3.5.0",
+            "uri": ""
+        }
+    }
+}
