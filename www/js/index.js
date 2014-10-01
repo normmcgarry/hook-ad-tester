@@ -6,15 +6,14 @@ var Application = function(testContainerView, historyContainerView) {
 Application.prototype.init = function() {
   this.testContainer = new TestContainer(this.testContainerView);
   this.historyContainer = new HistoryContainer(this.historyContainerView);
+
+  this.loadHistory();
+
   $.ajax("http://norm.hookdevz.com/projects/ad-tester/tests.json").done(function(data) {
     console.log(data);
     for(var i = 0; i < data.urls.length; i++) {
       var test = Test.createTest(data.urls[i]);
       this.testContainer.addTest(test);
-    }
-    for(var i = 0; i < this.historyItems.length; i++) {
-      var historyItem = this.historyItems[i];
-      this.historyContainer.addHistory(historyItem);
     }
   }.bind(this));
 };
@@ -29,6 +28,11 @@ Application.prototype.loadHistory = function(url) {
     var historyItem = historyItems[i];
     var history = History.createHistory(historyItem);
     this.historyItems.push(history);
+  }
+
+  for(var i = 0; i < this.historyItems.length; i++) {
+    var historyItem = this.historyItems[i];
+    this.historyContainer.addHistory(historyItem);
   }
 };
 
