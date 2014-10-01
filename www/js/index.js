@@ -1,3 +1,24 @@
+Array.prototype.unique = function(comparisonFn) {
+
+  var a = this;
+  for(var i=0; i<a.length; i++) {
+    for(var j=i+1; j<a.length; j++) {
+      if(comparisonFn) {
+        var result = comparisonFn(a[i], a[j]);
+        if(result) {
+          a.splice(j, 1);
+        }
+      }
+      else {
+        if(a[i] == a[j]) {
+          a.splice(j, 1);
+        }
+      }
+    }
+  }
+  return this;
+};
+
 var Application = function(testContainerView, historyContainerView) {
   this.testContainerView = testContainerView;
   this.historyContainerView = historyContainerView;
@@ -19,13 +40,14 @@ Application.prototype.init = function() {
 };
 
 Application.prototype.loadHistory = function(url) {
-  if(window.localStorage.getItem('historyItems') == null) {
+  if(window.localStorage.getItem('historyItems') == null || window.localStorage.getItem('historyItems') == "") {
     window.localStorage.setItem('historyItems', JSON.stringify({urls:[]}))
   }
-  var historyItems = window.localStorage.getItem('historyItems');
+  var historyItems = JSON.parse(window.localStorage.getItem('historyItems'));
+  console.log(historyItems);
   this.historyItems = new Array();
-  for(var i = 0; i < historyItems.length; i++) {
-    var historyItem = historyItems[i];
+  for(var i = 0; i < historyItems.urls.length; i++) {
+    var historyItem = historyItems.urls[i];
     var history = new History();
     history.href = historyItem;
     this.historyItems.push(history);
@@ -40,6 +62,7 @@ Application.prototype.loadHistory = function(url) {
 Application.prototype.save = function(url) {
   var historyItems = JSON.parse(window.localStorage.getItem('historyItems'));
   historyItems.urls.push(url);
+  historyItems.urls.unique();
   if(historyItems.urls.length > 10) {
     historyItems.urls.shift();
   }
@@ -60,7 +83,7 @@ HistoryContainer.prototype.addHistory = function(history) {
   this.element.append(historyView.element);
 };
 
-var HistoryView = function(test) {
+var HistoryView = function(history) {
   this.history = history;
   this.anchor = $("<a/>");
   this.anchor.attr("href", this.history.href);
