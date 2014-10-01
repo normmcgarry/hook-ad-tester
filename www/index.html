@@ -32,6 +32,10 @@
       <title>URL Tester</title>
     </head>
     <body>
+      <h1>Recents!!</h1>
+      <div class="panel panel-primary history" style="padding:30px;margin:10px;">
+
+      </div>
       <h1>Tests!!</h1>
       <div class="panel panel-primary list" style="padding:30px;margin:10px;">
 
@@ -57,13 +61,15 @@
       <script>
         $(window).load(function() {
           $("#urlInput").focus();
+
+          var application = new Application($(".list"), $(".history"));
+          application.init();
+
           $("button").click(function() {
-            window.location.href = "http://" + $("#urlInput").val();
+            application.goto("http://" + $("#urlInput").val());
+
             return false;
           });
-
-          var application = new Application($(".list"));
-          application.init();
         });
       </script>
     </body>

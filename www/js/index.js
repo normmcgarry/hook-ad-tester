@@ -1,17 +1,77 @@
-var Application = function(listContainer) {
-  this.listContainer = listContainer;
+var Application = function(testContainerView, historyContainerView) {
+  this.testContainerView = testContainerView;
+  this.historyContainerView = historyContainerView;
 };
 
 Application.prototype.init = function() {
-  this.testContainer = new TestContainer(this.listContainer);
+  this.testContainer = new TestContainer(this.testContainerView);
+  this.historyContainer = new HistoryContainer(this.historyContainerView);
   $.ajax("http://norm.hookdevz.com/projects/ad-tester/tests.json").done(function(data) {
     console.log(data);
     for(var i = 0; i < data.urls.length; i++) {
       var test = Test.createTest(data.urls[i]);
       this.testContainer.addTest(test);
     }
+    for(var i = 0; i < this.historyItems.length; i++) {
+      var historyItem = this.historyItems[i];
+      this.historyContainer.addHistory(historyItem);
+    }
   }.bind(this));
 };
+
+Application.prototype.loadHistory = function(url) {
+  if(window.localStorage.historyItems == null) {
+    window.localStorage.historyItems = new Array();
+  }
+  var historyItems = window.localStorage.historyItems;
+  this.historyItems = new Array();
+  for(var i = 0; i < historyItems.length; i++) {
+    var historyItem = historyItems[i];
+    var history = History.createHistory(historyItem);
+    this.historyItems.push(history);
+  }
+};
+
+Application.prototype.save = function(url) {
+  window.localStorage.historyItems.push(url);
+  if(window.localStorage.historyItems.length > 10) {
+    window.localStorage.historyItems.shift();
+  }
+};
+
+Application.prototype.goto = function(url) {
+  this.save(url);
+  window.location.href = url;
+};
+
+var HistoryContainer = function(domElement) {
+  this.element = domElement;
+};
+
+HistoryContainer.prototype.addHistory = function(history) {
+  var historyView = new HistoryView(history);
+  this.element.append(historyView.element);
+};
+
+var HistoryView = function(test) {
+  this.history = history;
+  this.anchor = $("<a/>");
+  this.anchor.attr("href", this.history.href);
+  this.anchor.text(history.href);
+  this.element = $("<div/>");
+  this.element.append(this.anchor);
+};
+
+var History = function() {
+
+};
+History.prototype.href = null;
+History.createHistory = function(data) {
+  var history = new History();
+  history.href = data.href;
+  return history;
+};
+
 
 var TestContainer = function(domElement) {
   this.element = domElement;
