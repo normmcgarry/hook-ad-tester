@@ -58,7 +58,14 @@
         $(window).load(function() {
           $("#urlInput").focus();
           $("button").click(function() {
-            window.location.href = "http://" + $("#urlInput").val();
+            //window.location.href = "http://" + $("#urlInput").val();
+
+            var iframe = $("<iframe/>");
+            iframe.width("100%");
+            iframe.height("100%");
+            $("body").append(iframe);
+            iframe.attr("src", "http://" + $("#urlInput").val());
+
             return false;
           });
 
