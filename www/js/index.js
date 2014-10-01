@@ -19,14 +19,15 @@ Application.prototype.init = function() {
 };
 
 Application.prototype.loadHistory = function(url) {
-  if(window.localStorage.historyItems == null) {
-    window.localStorage.historyItems = new Array();
+  if(window.localStorage.getItem('historyItems') == null) {
+    window.localStorage.setItem('historyItems', new Array())
   }
-  var historyItems = window.localStorage.historyItems;
+  var historyItems = window.localStorage.getItem('historyItems');
   this.historyItems = new Array();
   for(var i = 0; i < historyItems.length; i++) {
     var historyItem = historyItems[i];
-    var history = History.createHistory(historyItem);
+    var history = new History();
+    history.href = historyItem;
     this.historyItems.push(history);
   }
 
@@ -37,10 +38,12 @@ Application.prototype.loadHistory = function(url) {
 };
 
 Application.prototype.save = function(url) {
-  window.localStorage.historyItems.push(url);
-  if(window.localStorage.historyItems.length > 10) {
-    window.localStorage.historyItems.shift();
+  var historyItems = window.localStorage.getItem('historyItems');
+  historyItems.push(url);
+  if(historyItems.length > 10) {
+    historyItems.shift();
   }
+  window.localStorage.setItem('historyItems', historyItems);
 };
 
 Application.prototype.goto = function(url) {
