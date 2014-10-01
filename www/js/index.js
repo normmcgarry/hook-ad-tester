@@ -34,13 +34,6 @@ var TestView = function(test) {
   this.anchor = $("<a/>");
   this.anchor.attr("href", this.test.href);
   this.anchor.text(test.name);
-  this.anchor.click(function() {
-    var iframe = $("<iframe/>");
-    iframe.width("100%");
-    iframe.height("100%");
-    $("body").append(iframe);
-    iframe.attr("src",this.test.href);
-  }.bind(this));
   this.element = $("<div/>");
   this.element.append(this.anchor);
 };
