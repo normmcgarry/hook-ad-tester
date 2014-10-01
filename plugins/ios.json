@@ -6,6 +6,10 @@
     "config_munge": {
         "files": {}
     },
-    "installed_plugins": {},
+    "installed_plugins": {
+        "org.jshybugger.cordova": {
+            "PACKAGE_NAME": "com.byhook.internal.adtester"
+        }
+    },
     "dependent_plugins": {}
 }
