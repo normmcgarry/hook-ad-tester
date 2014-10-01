@@ -20,7 +20,7 @@ Application.prototype.init = function() {
 
 Application.prototype.loadHistory = function(url) {
   if(window.localStorage.getItem('historyItems') == null) {
-    window.localStorage.setItem('historyItems', JSON.stringify(new Array()))
+    window.localStorage.setItem('historyItems', JSON.stringify({urls:[]}))
   }
   var historyItems = window.localStorage.getItem('historyItems');
   this.historyItems = new Array();
@@ -39,9 +39,9 @@ Application.prototype.loadHistory = function(url) {
 
 Application.prototype.save = function(url) {
   var historyItems = JSON.parse(window.localStorage.getItem('historyItems'));
-  historyItems.push(url);
-  if(historyItems.length > 10) {
-    historyItems.shift();
+  historyItems.urls.push(url);
+  if(historyItems.urls.length > 10) {
+    historyItems.urls.shift();
   }
   window.localStorage.setItem('historyItems', JSON.stringify(historyItems));
 };
