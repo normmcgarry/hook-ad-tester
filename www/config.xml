@@ -68,6 +68,6 @@
     <gap:splash gap:platform="winphone" src="res/screen/windows-phone/screen-portrait.jpg" />
     <access origin="*" />
     <gap:config-file platform="ios" parent="UIApplicationExitsOnSuspend" overwrite="true">
-      <false/>
+      <true/>
     </gap:config-file>
 </widget>
